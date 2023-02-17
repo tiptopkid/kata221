@@ -1,9 +1,15 @@
 package hiber;
 
 import hiber.config.AppConfig;
+import hiber.dao.UserDaoImp;
+import hiber.model.Car;
 import hiber.model.User;
 import hiber.service.UserService;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -15,10 +21,23 @@ public class MainApp {
 
       UserService userService = context.getBean(UserService.class);
 
-      userService.add(new User("User1", "Lastname1", "user1@mail.ru"));
-      userService.add(new User("User2", "Lastname2", "user2@mail.ru"));
-      userService.add(new User("User3", "Lastname3", "user3@mail.ru"));
-      userService.add(new User("User4", "Lastname4", "user4@mail.ru"));
+
+      Car car1 = new Car("Tesla" , 1111);
+      Car car2 = new Car("BMW", 2222);
+      Car car3 = new Car("Mercedes", 3333);
+      Car car4 = new Car("Toyota" , 4444);
+
+
+      userService.add(new User("User1", "Lastname1", "user1@mail.ru", car1));
+      userService.add(new User("User2", "Lastname2", "user2@mail.ru", car2));
+      userService.add(new User("User3", "Lastname3", "user3@mail.ru", car3));
+      userService.add(new User("User4", "Lastname4", "user4@mail.ru", car4));
+
+
+
+
+
+
 
       List<User> users = userService.listUsers();
       for (User user : users) {
@@ -28,6 +47,16 @@ public class MainApp {
          System.out.println("Email = "+user.getEmail());
          System.out.println();
       }
+
+
+
+
+      System.out.println(userService.getUserByCar("BMW", 2222).toString());
+
+
+
+
+
 
       context.close();
    }
